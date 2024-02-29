@@ -12,7 +12,7 @@ function Login() {
   const emailInputRef = useRef("");
   const passwordInputRef = useRef("");
   const confirmPasswordInputRef = useRef("");
-  const [signUp, setSignup] = useState(true);
+  const [signUp, setSignup] = useState(false);
   const history = useHistory();
   const setToggle = () => {
     setSignup((prevState) => !prevState);
