@@ -1,0 +1,47 @@
+.form-style{
+    border: 2px Solid gainsboro;
+    border-radius: 1rem;
+    margin: auto;
+    margin-top: 7%;
+    width: 25vw;
+    height: 60vh;
+    padding: 2%;
+    padding-top: 2%;
+    position: relative;
+    box-shadow: 2px 2px 3px gainsboro;
+   
+}
+.form-div{
+    margin-top: 1.5rem;
+}
+.input{
+   padding: 2%;
+}
+.label{
+color: black;
+}
+h3{
+  margin-left: 25%;
+  
+    
+}
+.login-btn{
+    width: 100%;
+  
+}
+.ctn{
+
+
+  margin-top: 2rem;
+  margin-left: 38%;
+  
+
+}
+.toggle-btn{
+    width: 25vw;
+    border: 2px Solid grey;
+    
+}
+.toggle-btn:hover{
+   
+}
