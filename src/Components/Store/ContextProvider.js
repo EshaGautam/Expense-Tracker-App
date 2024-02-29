@@ -1,23 +1,32 @@
-// import React from "react";
-// import context from "./Context";
+import React, { useState } from "react";
+import context from "./Context";
 
 
 
-// function ContextProvider(props) {
+function ContextProvider(props) {
+
+const[token,setToken] =useState(null)
+
+const isUserLoggedIn = !!token;
+
+const loginUser=(tokenId)=>{
+    setToken(tokenId)
+    localStorage.setItem('token',tokenId)
+}
 
 
-// const userContext = {
-//     token,
-//     userLoggedIn,
-//     login,
-//     logout
-// }
-
-
-//   return (
+const userContext = {
+    token,
+    isUserLoggedIn,
+    loginUser,
     
-//     <context.Provider value={userContext}>{props.children}</context.Provider>
-//   )
-// }
+}
 
-// export default ContextProvider
+
+  return (
+    
+    <context.Provider value={userContext}>{props.children}</context.Provider>
+  )
+}
+
+export default ContextProvider
