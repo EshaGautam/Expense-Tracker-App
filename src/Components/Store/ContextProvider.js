@@ -4,8 +4,8 @@ import context from "./Context";
 
 
 function ContextProvider(props) {
-
-const[token,setToken] =useState(null)
+const existingToken = localStorage.getItem('token')
+const[token,setToken] =useState(existingToken)
 
 const isUserLoggedIn = !!token;
 

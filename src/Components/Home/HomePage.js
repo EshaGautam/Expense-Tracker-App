@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import './HomePage.css'
 import { Form ,Modal} from 'react-bootstrap';
 import { useState } from 'react';
@@ -6,19 +6,59 @@ import context from '../Store/Context';
 import { useContext } from 'react';
 ;
 function HomePage() {
+
+  
     const userCtx = useContext(context);
     const { token } = userCtx;
    const [show, setShow] = useState(false);
+   const[data,setData]=useState(null)
    const nameRef = useRef('')
    const urlRef = useRef('')
+  
+   useEffect(()=>{
+    const existingData = localStorage.getItem("userData");
+    const initialData = JSON.parse(existingData)
+    if(existingData){
+      setData(initialData)
+    }
+    getDetails()
+   },[])
 
-
+const update =(data)=>{
+  localStorage.setItem('userData',JSON.stringify(data))
+  setData(data)
+  
+}
       function handleClose() {
         return setShow(false);
       }
       function handleShow() {
         return setShow(true);
       }
+    const getDetails=async()=>{
+      try{
+         const getData = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyC16WLga3qeg6lpO-cz_n4kblJ11vmmxJ0',{
+          method:'POST',
+          body:JSON.stringify({
+            idToken:token,
+
+          }),
+          headers:{
+            'content-type':'application/json'
+          }
+        })
+        let response = await getData.json()
+        if(getData.ok){
+          update(response)
+        }
+        else{
+          throw new Error('Unable to fetch the data')
+        }
+      }
+      catch(error){
+        alert(error)
+      }
+    }
 
    const updateDetails = async(event)=>{
     try{
@@ -91,6 +131,7 @@ function HomePage() {
                     placeholder="enter full name"
                     autoFocus
                     ref={nameRef}
+                    defaultValue={data ? data.displayName : ""}
                   />
                 </Form.Group>
 
@@ -104,6 +145,7 @@ function HomePage() {
                     placeholder="enter url"
                     autoFocus
                     ref={urlRef}
+                    defaultValue={data ? data.photoUrl : ""}
                     pattern="https?://.+"
                   />
                 </Form.Group>
