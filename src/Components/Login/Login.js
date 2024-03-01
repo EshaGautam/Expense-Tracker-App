@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { useRef } from "react";
-import { Form, FloatingLabel, Button } from "react-bootstrap";
+import { Form, FloatingLabel, Button, Spinner } from "react-bootstrap";
 import context from "../Store/Context";
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
@@ -13,6 +13,8 @@ function Login() {
   const passwordInputRef = useRef("");
   const confirmPasswordInputRef = useRef("");
   const [signUp, setSignup] = useState(false);
+  const [forgetPass, setForgetPass] = useState(false);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const setToggle = () => {
     setSignup((prevState) => !prevState);
@@ -54,7 +56,7 @@ function Login() {
         },
       });
       let response = await sendData.json();
-  
+
       if (sendData.ok) {
         console.log("User has successfully signed up");
         loginUser(response.idToken);
@@ -67,17 +69,56 @@ function Login() {
     }
   };
 
+  const handleForgotPassword = () => {
+    setForgetPass((prevState) => !prevState);
+  };
+
+  const handleChangePass = async (event) => {
+    try {
+      setLoading(true);
+      event.preventDefault();
+
+      const sendRequest = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyC16WLga3qeg6lpO-cz_n4kblJ11vmmxJ0",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            requestType: "PASSWORD_RESET",
+            email: emailInputRef.current.value,
+          }),
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+      let response = await sendRequest.json();
+      if (sendRequest.ok) {
+        setLoading(false)
+        alert("sending request to the email...");
+      } else {
+        throw new Error("something went wrong",response.error.message);
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <div>
-      {signUp && <Button variant="dark">LOGOUT</Button>}
-      <>
+      {forgetPass ? (
         <div className="form-style">
-          <h3>{signUp ? "Sign Up" : "Login"}</h3>
-          <Form className="form-div" onSubmit={submitHandler}>
+          <h3 style={{ "margin-left": "10%", "margin-bottom": "3rem" }}>
+            Forget Password
+          </h3>
+          <span style={{ "margin-top": "5%" }}>
+            Enter email which you have registered!
+          </span>
+          <Form className="form-div" onSubmit={handleChangePass}>
             <FloatingLabel
               controlId="floatingInput"
               label="Email address"
               className="mb-3"
+              style={{ "margin-top": "0.5rem" }}
             >
               <Form.Control
                 type="email"
@@ -86,62 +127,95 @@ function Login() {
                 required
               />
             </FloatingLabel>
-            <FloatingLabel
-              controlId="floatingPassword"
-              label="Password"
-              className="mb-3"
-            >
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                ref={passwordInputRef}
-                required
-              />
-            </FloatingLabel>
-            {signUp && (
-              <FloatingLabel
-                controlId="floatingPassword"
-                label="Confirm-Password"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="password"
-                  placeholder="Confirm-Password"
-                  ref={confirmPasswordInputRef}
-                  required
-                />
-              </FloatingLabel>
-            )}
-            <Button
-              type="submit"
-              variant="success"
-              className={`${signUp ? "login-btn" : "signin-btn"}`}
-            >
-              {signUp ? "SignUp" : "Login"}
+
+            <Button type="submit" variant="success" className="login-btn">
+              {!loading ? "Send Link" : <Spinner animation="border" />}
             </Button>
-            {!signUp ? (
-              <a
-                href="https://example.com"
-                target="_blank"
-                rel="noopener noreferrer"
+
+            {forgetPass ? (
+              <button
+                className="forget-btn-toggle"
+                onClick={handleForgotPassword}
               >
-                forgot Password
-              </a>
+                Already have an account?Login
+              </button>
             ) : (
               ""
             )}
           </Form>
         </div>
-        <div className="ctn">
-          <Button
-            variant="outline-secondary"
-            className="toggle-btn"
-            onClick={setToggle}
-          >
-            {signUp ? "Have an account?Login" : "Don't have an account?Signup"}
-          </Button>
-        </div>
-      </>
+      ) : (
+        <>
+          <div className="form-style">
+            <h3>{signUp ? "Sign Up" : "Login"}</h3>
+            <Form className="form-div" onSubmit={submitHandler}>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Email address"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="email"
+                  placeholder="name@example.com"
+                  ref={emailInputRef}
+                  required
+                />
+              </FloatingLabel>
+              <FloatingLabel
+                controlId="floatingPassword"
+                label="Password"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  ref={passwordInputRef}
+                  required
+                />
+              </FloatingLabel>
+              {signUp && (
+                <FloatingLabel
+                  controlId="floatingPassword"
+                  label="Confirm-Password"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    type="password"
+                    placeholder="Confirm-Password"
+                    ref={confirmPasswordInputRef}
+                    required
+                  />
+                </FloatingLabel>
+              )}
+              <Button
+                type="submit"
+                variant="success"
+                className={`${signUp ? "login-btn" : "signin-btn"}`}
+              >
+                {signUp ? "SignUp" : "Login"}
+              </Button>
+              {!signUp ? (
+                <button className="forget-btn" onClick={handleForgotPassword}>
+                  Forgot Password
+                </button>
+              ) : (
+                ""
+              )}
+            </Form>
+          </div>
+          <div className="ctn">
+            <Button
+              variant="outline-secondary"
+              className="toggle-btn"
+              onClick={setToggle}
+            >
+              {signUp
+                ? "Have an account?Login"
+                : "Don't have an account?Signup"}
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

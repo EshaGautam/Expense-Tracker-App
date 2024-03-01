@@ -47,10 +47,19 @@ h3{
     border: 2px Solid grey;
     
 }
-a{
-  margin-top: 1rem;
-  margin-left: 32%;
-}
+
 .logout-btn{
   position: absolute;
+}
+.forget-btn{
+  border: none;
+  background-color: transparent;
+  margin-top: 1rem;
+  margin-left: 30%;
+}
+.forget-btn-toggle{
+   border: none;
+  background-color: transparent;
+  margin-top: 1rem;
+  margin-left:10%;
 }
