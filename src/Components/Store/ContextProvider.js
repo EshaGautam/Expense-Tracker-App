@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import context from "./Context";
 
 
 
 function ContextProvider(props) {
 const existingToken = localStorage.getItem('token')
+const isUserverified = localStorage.getItem('verified')
 const[token,setToken] =useState(existingToken)
+const [verify, setVerify] = useState(isUserverified);
+
 
 const isUserLoggedIn = !!token;
+
+const userVerified=()=>{
+   setVerify(true)
+   localStorage.setItem('verified',true)
+ 
+}
 
 const loginUser=(tokenId)=>{
     setToken(tokenId)
@@ -19,6 +28,9 @@ const userContext = {
     token,
     isUserLoggedIn,
     loginUser,
+    verify,
+    userVerified
+   
     
 }
 

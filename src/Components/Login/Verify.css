@@ -1,0 +1,26 @@
+.verify-ctn{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10%;
+}
+.inner-ctn{
+    margin-left: 25%;
+}
+.inner-ctn p{
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+}
+.verify-btn{
+      margin-left: 20%;
+      border: none;
+      border-radius: 1rem;
+      width: 25%;
+      padding: 10px;
+      background-color: cadetblue;
+      color: white;
+}
+.verify-ctn h3{
+      margin-left: 40%;
+    
+}

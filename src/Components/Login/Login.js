@@ -58,7 +58,7 @@ function Login() {
       if (sendData.ok) {
         console.log("User has successfully signed up");
         loginUser(response.idToken);
-        history.replace("/home");
+        history.replace("/verify");
       } else {
         throw new Error(response.error.message);
       }

@@ -6,18 +6,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import context from '../src/Components/Store/Context';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Redirect } from 'react-router-dom';
+import Verify from './Components/Login/Verify';
 
 function App() {
   const userCtx = useContext(context)
- const{isUserLoggedIn}=userCtx
+ const{isUserLoggedIn,verify}=userCtx
   return (
     <Router>
       <Switch>
         <Route path="/auth">
-          {isUserLoggedIn ? <Redirect to="/home" /> : <Login />}
+          {isUserLoggedIn ? <Redirect to="/verify" /> : <Login />}
         </Route>
         <Route path="/home">
-          {isUserLoggedIn ? <HomePage /> : <Redirect to="/auth" />}
+          {isUserLoggedIn && verify ? <HomePage /> : <Redirect to="/verify" />}
+        </Route>
+        <Route path="/verify">
+          {isUserLoggedIn ? <Verify /> : <Redirect to="/auth" />}
         </Route>
       </Switch>
     </Router>
