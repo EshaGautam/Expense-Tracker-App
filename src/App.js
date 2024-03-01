@@ -7,12 +7,14 @@ import context from '../src/Components/Store/Context';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Redirect } from 'react-router-dom';
 import Verify from './Components/Login/Verify';
+import Logout from "./Components/Login/Logout";
 
 function App() {
   const userCtx = useContext(context)
  const{isUserLoggedIn,verify}=userCtx
   return (
     <Router>
+      <Logout />
       <Switch>
         <Route path="/auth">
           {isUserLoggedIn ? <Redirect to="/verify" /> : <Login />}

@@ -106,11 +106,11 @@ const update =(data)=>{
             className="toggle-text-btn"
           >
             {!show ? (
-              <p>Your Profile is incompelete!click here to complete</p>
+              <p>Your Profile is incomplete!click here to complete</p>
             ) : (
               <p>
                 A complete profile has higher chances to land a job!
-                <span>Compelete Now!</span>
+                <span>Complete Now!</span>
               </p>
             )}
           </button>

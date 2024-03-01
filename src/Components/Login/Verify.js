@@ -39,15 +39,17 @@ function Verify() {
  }
 
   return (
-    <div className="verify-ctn">
-      <h3>Email Verification</h3>
-      <div className="inner-ctn">
-        <p>One Step Closer to a Secure Connection – Verify Your Email!</p>
-        <button className="verify-btn" onClick={handleVerify}>
-          Verify Email
-        </button>
+    <>
+      <div className="verify-ctn">
+        <h3>Email Verification</h3>
+        <div className="inner-ctn">
+          <p>One Step Closer to a Secure Connection – Verify Your Email!</p>
+          <button className="verify-btn" onClick={handleVerify}>
+            Verify Email
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

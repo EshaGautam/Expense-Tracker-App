@@ -22,6 +22,12 @@ const loginUser=(tokenId)=>{
     setToken(tokenId)
     localStorage.setItem('token',tokenId)
 }
+const logoutUser =()=>{
+setToken(null)
+localStorage.clear()
+
+}
+
 
 
 const userContext = {
@@ -29,8 +35,8 @@ const userContext = {
     isUserLoggedIn,
     loginUser,
     verify,
-    userVerified
-   
+    userVerified,
+   logoutUser
     
 }
 

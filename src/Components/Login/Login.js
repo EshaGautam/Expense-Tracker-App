@@ -68,78 +68,81 @@ function Login() {
   };
 
   return (
-    <>
-      <div className="form-style">
-        <h3>{signUp ? "Sign Up" : "Login"}</h3>
-        <Form className="form-div" onSubmit={submitHandler}>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Email address"
-            className="mb-3"
-          >
-            <Form.Control
-              type="email"
-              placeholder="name@example.com"
-              ref={emailInputRef}
-              required
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingPassword"
-            label="Password"
-            className="mb-3"
-          >
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              ref={passwordInputRef}
-              required
-            />
-          </FloatingLabel>
-          {signUp && (
+    <div>
+      {signUp && <Button variant="dark">LOGOUT</Button>}
+      <>
+        <div className="form-style">
+          <h3>{signUp ? "Sign Up" : "Login"}</h3>
+          <Form className="form-div" onSubmit={submitHandler}>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Email address"
+              className="mb-3"
+            >
+              <Form.Control
+                type="email"
+                placeholder="name@example.com"
+                ref={emailInputRef}
+                required
+              />
+            </FloatingLabel>
             <FloatingLabel
               controlId="floatingPassword"
-              label="Confirm-Password"
+              label="Password"
               className="mb-3"
             >
               <Form.Control
                 type="password"
-                placeholder="Confirm-Password"
-                ref={confirmPasswordInputRef}
+                placeholder="Password"
+                ref={passwordInputRef}
                 required
               />
             </FloatingLabel>
-          )}
-          <Button
-            type="submit"
-            variant="success"
-            className={`${signUp ? "login-btn" : "signin-btn"}`}
-          >
-            {signUp ? "SignUp" : "Login"}
-          </Button>
-          {!signUp ? (
-            <a
-              href="https://example.com"
-              target="_blank"
-              rel="noopener noreferrer"
+            {signUp && (
+              <FloatingLabel
+                controlId="floatingPassword"
+                label="Confirm-Password"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm-Password"
+                  ref={confirmPasswordInputRef}
+                  required
+                />
+              </FloatingLabel>
+            )}
+            <Button
+              type="submit"
+              variant="success"
+              className={`${signUp ? "login-btn" : "signin-btn"}`}
             >
-              forgot Password
-            </a>
-          ) : (
-            ""
-          )}
-        </Form>
-      </div>
-      <div className="ctn">
-        <Button
-          variant="outline-secondary"
-          className="toggle-btn"
-          onClick={setToggle}
-        >
-          {signUp ? "Have an account?Login" : "Don't have an account?Signup"}
-        </Button>
-      </div>
-    </>
+              {signUp ? "SignUp" : "Login"}
+            </Button>
+            {!signUp ? (
+              <a
+                href="https://example.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                forgot Password
+              </a>
+            ) : (
+              ""
+            )}
+          </Form>
+        </div>
+        <div className="ctn">
+          <Button
+            variant="outline-secondary"
+            className="toggle-btn"
+            onClick={setToggle}
+          >
+            {signUp ? "Have an account?Login" : "Don't have an account?Signup"}
+          </Button>
+        </div>
+      </>
+    </div>
   );
 }
 

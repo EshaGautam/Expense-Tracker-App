@@ -51,3 +51,6 @@ a{
   margin-top: 1rem;
   margin-left: 32%;
 }
+.logout-btn{
+  position: absolute;
+}
