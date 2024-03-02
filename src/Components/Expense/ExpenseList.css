@@ -31,3 +31,11 @@ p{
      font-weight: bold;
      font-size: large;
 }
+.extra-btn{
+    border: none;
+   background-color:#FFD1DC; ;
+   padding: 0.5rem;
+   border-radius: 0.5rem;
+   box-shadow: 3px 3px 4px gray;
+   font-size:1rem;
+}

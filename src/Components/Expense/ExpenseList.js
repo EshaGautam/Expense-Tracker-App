@@ -5,18 +5,37 @@ import { useContext } from "react";
 
 import { Accordion } from 'react-bootstrap';
 
-function ExpenseList() {
+function ExpenseList(props) {
   const userCtx = useContext(context);
-  const { expenses } = userCtx;
+  const { expenses, handleDelete } = userCtx;
 
+  const handleExpenseDelete=(id)=>{
+    handleDelete(id)
+    props.fetchExpense()
+  }
+
+  const handleEditExpense=(id)=>{
+  props.editExpense(id)
+  }
  
-  const expenseItem = expenses.length>0?(expenses.map((expense) => (
-    <div key={expense.id} className="list">
-        <span>{expense.amount}</span>
-        <span>{expense.description}</span>
-        <span>{expense.category}</span>
-    </div>
-  ))):(<p>NO EXPENSE MADE!</p>)
+  const expenseItem =
+    expenses.length > 0 ? (
+      expenses.map((expense) => (
+        <div key={expense.id} className="list">
+          <span>{expense.amount}</span>
+          <span>{expense.description}</span>
+          <span>{expense.category}</span>
+          <span>
+            <button className="extra-btn" onClick={()=>handleEditExpense(expense.id)} >Edit</button>
+          </span>
+          <span>
+            <button className="extra-btn" onClick={()=>handleExpenseDelete(expense.id) }>Delete</button>
+          </span>
+        </div>
+      ))
+    ) : (
+      <p>NO EXPENSE MADE!</p>
+    );
 
 
 

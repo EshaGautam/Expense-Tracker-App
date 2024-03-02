@@ -19,6 +19,31 @@ const handleExpense=(expenseMade)=>{
   setExpenses(expenseMade);
   
 }
+const handleDelete =async(id)=>{
+   try{
+      const deleteRequest = await fetch(
+        `https://expense-auth-8a11b-default-rtdb.firebaseio.com/expense/${id}.json`,
+        {
+          method: "DELETE",
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+      if(deleteRequest.ok){
+         const updatedExpense = expenses.filter((expense)=>expense.id !==id)
+         setExpenses(updatedExpense)
+      }
+      else{
+         let response = await deleteRequest.json()
+         throw new Error(response.error.message)
+      }
+   }
+   catch(error){
+      alert(error)
+   }
+  
+}
 
 
 const userVerified=()=>{
@@ -47,18 +72,19 @@ localStorage.removeItem('token')
 
 
 const userContext = {
-    token,
-    isUserLoggedIn,
-    loginUser,
-    verify,
-    userVerified,
-   logoutUser,
-   userUpdated,
-   update,
-   handleExpense,
-   expenses
-    
-}
+  token,
+  isUserLoggedIn,
+  loginUser,
+  verify,
+  userVerified,
+  logoutUser,
+  userUpdated,
+  update,
+  handleExpense,
+  expenses,
+  handleDelete,
+
+};
 
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./ExpenseForm.css";
 import context from "../Store/Context";
 import { useContext } from "react";
@@ -7,7 +7,8 @@ import ExpenseList from "./ExpenseList";
 
 function ExpenseForm() {
   const userCtx = useContext(context);
-  const { handleExpense } = userCtx;
+  const { handleExpense,expenses } = userCtx;
+  const [editInput,setEditInput]=useState({})
   const amountInputRef = useRef();
   const descriptionInputRef = useRef();
   const categoryInputRef = useRef();
@@ -16,30 +17,66 @@ function ExpenseForm() {
     fetchExpense();
   }, []);
 
+   useEffect(() => {
+    
+     amountInputRef.current.value = editInput.amount || "";
+     descriptionInputRef.current.value = editInput.description || "";
+     categoryInputRef.current.value = editInput.category || "";
+   }, [editInput]);
+
+
   const handleExpenseSubmit = async (event) => {
     try {
       event.preventDefault();
 
-      const expenseSend = await fetch(
-        "https://expense-auth-8a11b-default-rtdb.firebaseio.com/expense.json",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            amount: amountInputRef.current.value,
-            description: descriptionInputRef.current.value,
-            category: categoryInputRef.current.value,
-          }),
-          header: {
-            "content-type": "application/json",
-          },
+      if (editInput.id) {
+        const expenseUpdate = await fetch(
+          `https://expense-auth-8a11b-default-rtdb.firebaseio.com/expense/${editInput.id}.json`,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              amount: amountInputRef.current.value,
+              description: descriptionInputRef.current.value,
+              category: categoryInputRef.current.value,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (expenseUpdate.ok) {
+          alert("Expense Updated Successfully");
+          fetchExpense();
+          setEditInput({}); 
+        } else {
+          throw new Error("Failed to update expense");
         }
-      );
-      let response = await expenseSend.json();
-      if (expenseSend.ok) {
-        alert("Data Posted Successfully");
-        fetchExpense();
-      } else {
-        throw new Error(response.Error.message);
+      }
+       else {
+       
+        const expenseSend = await fetch(
+          "https://expense-auth-8a11b-default-rtdb.firebaseio.com/expense.json",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              amount: amountInputRef.current.value,
+              description: descriptionInputRef.current.value,
+              category: categoryInputRef.current.value,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        let response = await expenseSend.json();
+        if (expenseSend.ok) {
+          alert("Data Posted Successfully");
+          fetchExpense();
+        } else {
+          throw new Error(response.Error.message);
+        }
       }
     } catch (error) {
       alert(error);
@@ -49,6 +86,7 @@ function ExpenseForm() {
     descriptionInputRef.current.value = "";
     categoryInputRef.current.value = "";
   };
+
 
   const fetchExpense = async () => {
     try {
@@ -75,6 +113,13 @@ function ExpenseForm() {
     }
   };
 
+  const editRequest = async(id)=>{
+    let editExpense = expenses.find((expense)=>expense.id === id)
+    setEditInput({...editExpense})
+     
+    }
+   
+
   return (
     <>
       <div className="expense-form">
@@ -87,6 +132,7 @@ function ExpenseForm() {
                 type="text"
                 className="expense-input"
                 ref={amountInputRef}
+                defaultValue={editInput.amount}
               />
             </Form.Group>
 
@@ -96,13 +142,14 @@ function ExpenseForm() {
                 className="expense-input"
                 type="text"
                 ref={descriptionInputRef}
+                defaultValue={editInput.description}
               />
             </Form.Group>
 
             <Form.Group as={Col} controlId="formGridState">
               <Form.Label className="label">Category</Form.Label>
               <Form.Select
-                defaultValue="Choose..."
+                defaultValue={editInput &&editInput.category}
                 className="expense-input"
                 ref={categoryInputRef}
               >
@@ -121,7 +168,7 @@ function ExpenseForm() {
         </Form>
       </div>
       <div>
-        <ExpenseList />
+        <ExpenseList fetchExpense={fetchExpense} editExpense={editRequest} />
       </div>
     </>
   );
