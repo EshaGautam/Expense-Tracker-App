@@ -1,0 +1,39 @@
+
+.expense-form{
+    
+    margin:5% 10% 0 10%;
+    border:2px solid gainsboro;
+    padding-left: 10%;
+    padding-right:10%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    border-radius: 2rem;
+    box-shadow: 4px 4px 6px palevioletred;
+    background-color:white;
+
+
+}
+.expense-btn{
+   border: none;
+   background-color:#FFD1DC; ;
+   padding: 1rem;
+   margin-left: 40%;
+   margin-top: 1em;
+   width: 20%;
+   border-radius: 2rem;
+   box-shadow: 3px 3px 4px gray
+  
+   
+}
+.expense-form h3{
+ margin-left: 40%;
+ margin-bottom: 3rem;
+ 
+    
+}
+
+.label{
+     font-size: 1.25rem;
+    font-family: monospace;
+    font-weight: bold;
+}

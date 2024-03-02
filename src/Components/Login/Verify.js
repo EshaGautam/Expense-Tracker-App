@@ -1,5 +1,5 @@
 import React from 'react'
-import { useContext } from 'react';
+import { useContext,useEffect } from 'react';
 import context from '../Store/Context';
 import './Verify.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
@@ -8,9 +8,22 @@ function Verify() {
       const userCtx = useContext(context);
   const { token, userVerified } = userCtx;
   const history = useHistory()
- 
+
+
+  useEffect(() => {
+    const isUserverified = localStorage.getItem("verified");
+
+    if (isUserverified) {
+      userVerified()
+      history.push("/home");
+    }
+  }, []);
+
 
  const handleVerify=async()=>{
+
+
+
     try{
       const verifyEmail = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyC16WLga3qeg6lpO-cz_n4kblJ11vmmxJ0",{
         method:'POST',

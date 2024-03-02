@@ -4,22 +4,28 @@ import { Form ,Modal} from 'react-bootstrap';
 import { useState } from 'react';
 import context from '../Store/Context';
 import { useContext } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+
 ;
 function HomePage() {
 
   
     const userCtx = useContext(context);
-    const { token } = userCtx;
+    const { token,userUpdated} = userCtx;
    const [show, setShow] = useState(false);
    const[data,setData]=useState(null)
    const nameRef = useRef('')
    const urlRef = useRef('')
-  
+   const history = useHistory()
+
    useEffect(()=>{
     const existingData = localStorage.getItem("userData");
     const initialData = JSON.parse(existingData)
-    if(existingData){
+    const updatedkey = localStorage.getItem('updated')
+    if(existingData && updatedkey){
       setData(initialData)
+      userUpdated()
+      history.replace('/expense')
     }
     getDetails()
    },[])
@@ -78,6 +84,7 @@ const update =(data)=>{
        let response = await updatedData.json()
        if(updatedData.ok){
         alert('Profile Updated')
+        userUpdated()
         handleClose()
        }
        else{

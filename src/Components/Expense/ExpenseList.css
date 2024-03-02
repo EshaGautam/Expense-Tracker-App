@@ -1,0 +1,33 @@
+.expense-ctn{
+    margin:5% 10% 0 10%;
+    border:2px solid gainsboro;
+      background-color:white;
+      border:  palevioletred;
+     box-shadow: 3px 3px 4px palevioletred
+}
+
+.expense-head span{
+   margin-left: 40%;
+   font-weight: bold;
+}
+.list{
+    display: flex;
+    justify-content: space-between;
+      border:2px solid gainsboro;
+    border-radius: 1rem;
+     margin-top: 2px;
+    padding:1rem 5rem 1rem 5rem;
+    box-shadow: 4px 4px 6px gainsboro;
+    
+    
+}
+.list span{
+    font-size: 1.25rem;
+    font-family: monospace;
+    font-weight: bold;
+}
+p{
+      margin-left: 40%;
+     font-weight: bold;
+     font-size: large;
+}

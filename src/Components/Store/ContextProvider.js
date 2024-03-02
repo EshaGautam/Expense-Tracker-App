@@ -3,18 +3,33 @@ import context from "./Context";
 
 
 
+
 function ContextProvider(props) {
 const existingToken = localStorage.getItem('token')
-const isUserverified = localStorage.getItem('verified')
+
 const[token,setToken] =useState(existingToken)
-const [verify, setVerify] = useState(isUserverified);
+const [verify, setVerify] = useState(false);
+const [update,setUpdate] = useState(false)
+const[expenses,setExpenses] = useState([])
 
 
 const isUserLoggedIn = !!token;
 
+const handleExpense=(expenseMade)=>{
+  setExpenses((prevExpenses) => [...prevExpenses, expenseMade]);
+  
+}
+
+
 const userVerified=()=>{
    setVerify(true)
    localStorage.setItem('verified',true)
+ 
+}
+
+const userUpdated=()=>{
+   setUpdate(true)
+   localStorage.setItem('updated',true)
  
 }
 
@@ -24,7 +39,8 @@ const loginUser=(tokenId)=>{
 }
 const logoutUser =()=>{
 setToken(null)
-localStorage.clear()
+localStorage.removeItem('token')
+// localStorage.clear()
 
 }
 
@@ -36,7 +52,11 @@ const userContext = {
     loginUser,
     verify,
     userVerified,
-   logoutUser
+   logoutUser,
+   userUpdated,
+   update,
+   handleExpense,
+   expenses
     
 }
 
