@@ -16,7 +16,7 @@ const[expenses,setExpenses] = useState([])
 const isUserLoggedIn = !!token;
 
 const handleExpense=(expenseMade)=>{
-  setExpenses((prevExpenses) => [...prevExpenses, expenseMade]);
+  setExpenses(expenseMade);
   
 }
 
