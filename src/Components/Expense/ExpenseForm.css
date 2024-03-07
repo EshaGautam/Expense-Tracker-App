@@ -10,6 +10,7 @@
     border-radius: 2rem;
     box-shadow: 4px 4px 6px palevioletred;
     background-color:white;
+    opacity: 0.;
 
 
 }
@@ -36,4 +37,28 @@
      font-size: 1.25rem;
     font-family: monospace;
     font-weight: bold;
+}
+
+.premium{
+    border: none;
+   background-color:darkmagenta; ;
+   padding: 1rem;
+   margin-left: 40%;
+   margin-top: 1em;
+   width: 20%;
+   border-radius: 2rem;
+   box-shadow: 3px 3px 4px gray;
+   color:white;
+   animation: glow 1.5s infinite
+}
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.7); /* Green glow */
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.9); /* Larger glow */
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.7); /* Back to the initial glow */
+  }
 }

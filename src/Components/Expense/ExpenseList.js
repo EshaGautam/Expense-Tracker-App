@@ -1,25 +1,47 @@
 
 import './ExpenseList.css'
-import context from "../Store/Context";
-import { useContext } from "react";
-
 import { Accordion } from 'react-bootstrap';
+import { useDispatch,useSelector } from 'react-redux';
+import { expenseAction } from '../Store/expense';
 
 function ExpenseList(props) {
-  const userCtx = useContext(context);
-  const { expenses, handleDelete } = userCtx;
 
-  const handleExpenseDelete=(id)=>{
-    handleDelete(id)
-    props.fetchExpense()
-  }
+  const dispatch = useDispatch()
+  const expenses = useSelector((state) => state.expense.expense);
+    const email = useSelector((state) => state.auth.userEmail);
 
-  const handleEditExpense=(id)=>{
-  props.editExpense(id)
-  }
+  const handleEditExpense = (id) => {
+    props.editExpense(id);
+  };
+
+  const handleDeleteExpense = async(id) => {
+    try{
+      const deleteRequest = await fetch(
+        `https://expense-5d5dc-default-rtdb.firebaseio.com/expense/${email}/${id}.json`,
+        {
+          method: "DELETE",
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+      let response = await deleteRequest.json()
+      if(deleteRequest.ok){
+       dispatch(expenseAction.deleteExpense(id));
+       props.fetchExpense()
+      }
+      else{
+        throw new Error(response.Error)
+      }
+    }
+    catch(error){
+      alert(error)
+    }
+    
+  };
  
   const expenseItem =
-    expenses.length > 0 ? (
+    expenses && expenses.length > 0 ? (
       expenses.map((expense) => (
         <div key={expense.id} className="list">
           <span>{expense.amount}</span>
@@ -29,7 +51,7 @@ function ExpenseList(props) {
             <button className="extra-btn" onClick={()=>handleEditExpense(expense.id)} >Edit</button>
           </span>
           <span>
-            <button className="extra-btn" onClick={()=>handleExpenseDelete(expense.id) }>Delete</button>
+            <button className="extra-btn" onClick={()=>{ handleDeleteExpense(expense.id)} }>Delete</button>
           </span>
         </div>
       ))

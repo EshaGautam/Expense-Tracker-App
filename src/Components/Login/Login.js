@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import { useRef } from "react";
 import { Form, FloatingLabel, Button, Spinner } from "react-bootstrap";
-import context from "../Store/Context";
-import { useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { useDispatch,useSelector } from "react-redux";
+import { authAction } from "../Store/auth";
 
 function Login() {
-  const userCtx = useContext(context);
-  const { loginUser } = userCtx;
+  const dispatch = useDispatch()
   const emailInputRef = useRef("");
   const passwordInputRef = useRef("");
   const confirmPasswordInputRef = useRef("");
@@ -16,6 +15,18 @@ function Login() {
   const [forgetPass, setForgetPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const token = useSelector((state)=>state.auth.token)
+
+
+  useEffect(() => {
+      const tokenInStorage = localStorage.getItem('token')
+      if(tokenInStorage){
+      dispatch(authAction.login(tokenInStorage));
+      history.replace('/verify')
+      }
+    }
+  , []);
+
   const setToggle = () => {
     setSignup((prevState) => !prevState);
   };
@@ -56,11 +67,12 @@ function Login() {
         },
       });
       let response = await sendData.json();
-
+ 
       if (sendData.ok) {
         console.log("User has successfully signed up");
-        loginUser(response.idToken);
-        history.replace("/verify");
+         dispatch(authAction.login(response.idToken));
+         dispatch(authAction.emailUpdated(response.email));
+          history.replace("/verify");
       } else {
         throw new Error(response.error.message);
       }

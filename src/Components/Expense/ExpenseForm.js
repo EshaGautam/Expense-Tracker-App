@@ -1,28 +1,40 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./ExpenseForm.css";
-import context from "../Store/Context";
-import { useContext } from "react";
+
 import { Form, Row, Col } from "react-bootstrap";
 import ExpenseList from "./ExpenseList";
+import { expenseAction } from "../Store/expense";
+import { useDispatch, useSelector } from "react-redux";
+import "./ExpenseForm.css";
 
 function ExpenseForm() {
-  const userCtx = useContext(context);
-  const { handleExpense,expenses } = userCtx;
+  document.body.style.backgroundColor="pink"
+ const [totalExpense, setTotalExpense] = useState(0);
   const [editInput,setEditInput]=useState({})
   const amountInputRef = useRef();
   const descriptionInputRef = useRef();
   const categoryInputRef = useRef();
+  const dispatch = useDispatch()
+  const expenses = useSelector((state)=>state.expense.expense)
+  const email = useSelector((state) => state.auth.userEmail);
 
   useEffect(() => {
     fetchExpense();
   }, []);
 
    useEffect(() => {
-    
      amountInputRef.current.value = editInput.amount || "";
      descriptionInputRef.current.value = editInput.description || "";
      categoryInputRef.current.value = editInput.category || "";
    }, [editInput]);
+
+
+ useEffect(() => {
+   const calculatedTotalExpense = expenses.reduce(
+     (total, expense) => total + expense.amount + 0,
+     0
+   );
+    setTotalExpense(calculatedTotalExpense);
+ }, [expenses]);
 
 
   const handleExpenseSubmit = async (event) => {
@@ -31,7 +43,7 @@ function ExpenseForm() {
 
       if (editInput.id) {
         const expenseUpdate = await fetch(
-          `https://expense-auth-8a11b-default-rtdb.firebaseio.com/expense/${editInput.id}.json`,
+          `https://expense-5d5dc-default-rtdb.firebaseio.com/expense/${email}/${editInput.id}.json`,
           {
             method: "PUT",
             body: JSON.stringify({
@@ -56,7 +68,7 @@ function ExpenseForm() {
        else {
        
         const expenseSend = await fetch(
-          "https://expense-auth-8a11b-default-rtdb.firebaseio.com/expense.json",
+          `https://expense-5d5dc-default-rtdb.firebaseio.com/expense/${email}.json`,
           {
             method: "POST",
             body: JSON.stringify({
@@ -72,7 +84,6 @@ function ExpenseForm() {
 
         let response = await expenseSend.json();
         if (expenseSend.ok) {
-          alert("Data Posted Successfully");
           fetchExpense();
         } else {
           throw new Error(response.Error.message);
@@ -91,7 +102,7 @@ function ExpenseForm() {
   const fetchExpense = async () => {
     try {
       const expenseGet = await fetch(
-        "https://expense-auth-8a11b-default-rtdb.firebaseio.com/expense.json"
+        `https://expense-5d5dc-default-rtdb.firebaseio.com/expense/${email}.json`
       );
       if (expenseGet.ok) {
         let response = await expenseGet.json();
@@ -101,8 +112,7 @@ function ExpenseForm() {
             id,
             ...response[id],
           }));
-
-          handleExpense(transformedExpense);
+         dispatch(expenseAction.addExpense(transformedExpense))
         }
       } else {
         let response = await expenseGet.json();
@@ -149,7 +159,7 @@ function ExpenseForm() {
             <Form.Group as={Col} controlId="formGridState">
               <Form.Label className="label">Category</Form.Label>
               <Form.Select
-                defaultValue={editInput &&editInput.category}
+                defaultValue={editInput && editInput.category}
                 className="expense-input"
                 ref={categoryInputRef}
               >
@@ -162,8 +172,11 @@ function ExpenseForm() {
               </Form.Select>
             </Form.Group>
           </Row>
-          <button type="submit" className="expense-btn">
-            Submit
+          <button
+            type="submit"
+            className={`${totalExpense > 10000 ? "premium" : "expense-btn"}`}
+          >
+            {totalExpense > 10000 ? "Activate Premium" : "Submit"}
           </button>
         </Form>
       </div>

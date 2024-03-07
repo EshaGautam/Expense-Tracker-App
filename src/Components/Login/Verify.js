@@ -1,20 +1,21 @@
 import React from 'react'
-import { useContext,useEffect } from 'react';
-import context from '../Store/Context';
 import './Verify.css'
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useSelector,useDispatch } from 'react-redux';
+import { authAction } from "../Store/auth";
 
 function Verify() {
-      const userCtx = useContext(context);
-  const { token, userVerified } = userCtx;
+ 
+  const token = useSelector((state)=>state.auth.token)
+  const dispatch=useDispatch()
   const history = useHistory()
 
 
   useEffect(() => {
     const isUserverified = localStorage.getItem("verified");
-
     if (isUserverified) {
-      userVerified()
+      dispatch(authAction.userVerified())
       history.push("/home");
     }
   }, []);
@@ -22,14 +23,12 @@ function Verify() {
 
  const handleVerify=async()=>{
 
-
-
     try{
       const verifyEmail = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyC16WLga3qeg6lpO-cz_n4kblJ11vmmxJ0",{
         method:'POST',
         body:JSON.stringify({
             requestType: "VERIFY_EMAIL",
-           idToken:token
+            idToken:token
         }),
         headers:{
             'content-type':'application/json'
@@ -39,7 +38,7 @@ function Verify() {
       if(verifyEmail.ok){
         console.log(response)
         alert('Message Send Successfully')
-        userVerified()
+           dispatch(authAction.userVerified());
         history.replace('/home')
       }
       else{

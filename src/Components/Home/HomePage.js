@@ -2,16 +2,16 @@ import React, { useEffect, useRef } from 'react'
 import './HomePage.css'
 import { Form ,Modal} from 'react-bootstrap';
 import { useState } from 'react';
-import context from '../Store/Context';
-import { useContext } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useDispatch, useSelector } from 'react-redux';
+import { authAction } from "../Store/auth";
 
 ;
 function HomePage() {
-
+const token = useSelector((state)=>state.auth.token)
+const dispatch = useDispatch()
   
-    const userCtx = useContext(context);
-    const { token,userUpdated} = userCtx;
+
    const [show, setShow] = useState(false);
    const[data,setData]=useState(null)
    const nameRef = useRef('')
@@ -24,7 +24,7 @@ function HomePage() {
     const updatedkey = localStorage.getItem('updated')
     if(existingData && updatedkey){
       setData(initialData)
-      userUpdated()
+     dispatch(authAction.userUpdated())
       history.replace('/expense')
     }
     getDetails()
@@ -84,7 +84,7 @@ const update =(data)=>{
        let response = await updatedData.json()
        if(updatedData.ok){
         alert('Profile Updated')
-        userUpdated()
+      dispatch(authAction.userUpdated())
         handleClose()
        }
        else{

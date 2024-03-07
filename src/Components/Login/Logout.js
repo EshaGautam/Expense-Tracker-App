@@ -1,15 +1,17 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { useContext } from "react";
-import context from "../Store/Context";
 import './Logout.css'
+import { useDispatch,useSelector } from "react-redux";
+import {authAction} from "../Store/auth";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function Logout() {
-  const userCtx = useContext(context);
-  const { isUserLoggedIn, logoutUser } = userCtx;
+ const dispatch = useDispatch()
+ const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
+
 
   const handleLogout = () => {
-   logoutUser()
+   dispatch(authAction.logout())
   };
 
   return (
