@@ -3,12 +3,13 @@ import './ExpenseList.css'
 import { Accordion } from 'react-bootstrap';
 import { useDispatch,useSelector } from 'react-redux';
 import { expenseAction } from '../Store/expense';
+import ExpenseDownload from './ExpenseDownload'
 
 function ExpenseList(props) {
 
   const dispatch = useDispatch()
   const expenses = useSelector((state) => state.expense.expense);
-    const email = useSelector((state) => state.auth.userEmail);
+  const email = useSelector((state) => state.auth.userEmail);
 
   const handleEditExpense = (id) => {
     props.editExpense(id);
@@ -48,10 +49,22 @@ function ExpenseList(props) {
           <span>{expense.description}</span>
           <span>{expense.category}</span>
           <span>
-            <button className="extra-btn" onClick={()=>handleEditExpense(expense.id)} >Edit</button>
+            <button
+              className="extra-btn"
+              onClick={() => handleEditExpense(expense.id)}
+            >
+              Edit
+            </button>
           </span>
           <span>
-            <button className="extra-btn" onClick={()=>{ handleDeleteExpense(expense.id)} }>Delete</button>
+            <button
+              className="extra-btn"
+              onClick={() => {
+                handleDeleteExpense(expense.id);
+              }}
+            >
+              Delete
+            </button>
           </span>
         </div>
       ))
@@ -66,7 +79,10 @@ function ExpenseList(props) {
       <Accordion defaultActiveKey={["0"]} alwaysOpen className="expense-ctn">
         <Accordion.Item eventKey="0">
           <Accordion.Header className="expense-head">
-            <span>SEE YOUR EXPENSE</span>
+            <span id='header'>SEE YOUR EXPENSE</span>
+            <span>
+              <ExpenseDownload/>
+            </span>
           </Accordion.Header>
           <Accordion.Body >{expenseItem}</Accordion.Body>
         </Accordion.Item>

@@ -10,7 +10,7 @@ const ExpenseSlice = createSlice({
   initialState: expenseInitialState,
   reducers: {
     addExpense(state, action) {
-         const newExpenses = action.payload;
+      const newExpenses = action.payload;
       state.expense = newExpenses
      
     },

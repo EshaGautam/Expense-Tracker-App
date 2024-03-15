@@ -30,11 +30,11 @@ const AuthSlice = createSlice({
         },
          userVerified(state,action){
             state.isUserVerified = true
-              localStorage.setItem("verified", true);
+            localStorage.setItem("verified", true);
 
          },     
          userUpdated(state,action){
-            state.updated=true
+             state.updated=true
              localStorage.setItem("updated", true);
          },
          emailUpdated(state,action){

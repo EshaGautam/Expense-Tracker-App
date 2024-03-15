@@ -7,8 +7,9 @@
 }
 
 .expense-head span{
-   margin-left: 40%;
-   font-weight: bold;
+   margin-left: 35%;
+   font-size: 1.5rem;
+  font-weight: bold;
 }
 .list{
     display: flex;
@@ -38,4 +39,5 @@ p{
    border-radius: 0.5rem;
    box-shadow: 3px 3px 4px gray;
    font-size:1rem;
+   font-weight: bold;
 }

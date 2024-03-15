@@ -15,7 +15,7 @@ function Login() {
   const [forgetPass, setForgetPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  const token = useSelector((state)=>state.auth.token)
+
 
 
   useEffect(() => {
@@ -118,7 +118,7 @@ function Login() {
   return (
     <div>
       {forgetPass ? (
-        <div className="form-style">
+        <div className='form-style'>
           <h3 style={{ "margin-left": "10%", "margin-bottom": "3rem" }}>
             Forget Password
           </h3>

@@ -1,41 +1,45 @@
-import React, { useEffect, useRef, useState } from "react";
 
+import React, { useEffect, useRef, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import ExpenseList from "./ExpenseList";
 import { expenseAction } from "../Store/expense";
+import { themeAction } from "../Store/theme";
 import { useDispatch, useSelector } from "react-redux";
 import "./ExpenseForm.css";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function ExpenseForm() {
-  document.body.style.backgroundColor="pink"
- const [totalExpense, setTotalExpense] = useState(0);
-  const [editInput,setEditInput]=useState({})
+  const history =  useHistory()
+  const [totalExpense, setTotalExpense] = useState(0);
+  const [editInput, setEditInput] = useState({});
   const amountInputRef = useRef();
   const descriptionInputRef = useRef();
   const categoryInputRef = useRef();
-  const dispatch = useDispatch()
-  const expenses = useSelector((state)=>state.expense.expense)
+  const dispatch = useDispatch();
+  const expenses = useSelector((state) => state.expense.expense);
   const email = useSelector((state) => state.auth.userEmail);
 
   useEffect(() => {
     fetchExpense();
   }, []);
 
-   useEffect(() => {
-     amountInputRef.current.value = editInput.amount || "";
-     descriptionInputRef.current.value = editInput.description || "";
-     categoryInputRef.current.value = editInput.category || "";
-   }, [editInput]);
+  useEffect(() => {
+    amountInputRef.current.value = editInput.amount || "";
+    descriptionInputRef.current.value = editInput.description || "";
+    categoryInputRef.current.value = editInput.category || "";
+  }, [editInput]);
 
-
- useEffect(() => {
-   const calculatedTotalExpense = expenses.reduce(
-     (total, expense) => total + expense.amount + 0,
-     0
-   );
+  useEffect(() => {
+    const calculatedTotalExpense = expenses.reduce(
+      (total, expense) => total + expense.amount + 0,
+      0
+    );
     setTotalExpense(calculatedTotalExpense);
- }, [expenses]);
-
+    
+    if (calculatedTotalExpense > 10000 ) {
+      dispatch(themeAction.toggleDarkMode());
+    }
+  }, [expenses]);
 
   const handleExpenseSubmit = async (event) => {
     try {
@@ -60,13 +64,11 @@ function ExpenseForm() {
         if (expenseUpdate.ok) {
           alert("Expense Updated Successfully");
           fetchExpense();
-          setEditInput({}); 
+          setEditInput({});
         } else {
           throw new Error("Failed to update expense");
         }
-      }
-       else {
-       
+      } else {
         const expenseSend = await fetch(
           `https://expense-5d5dc-default-rtdb.firebaseio.com/expense/${email}.json`,
           {
@@ -98,7 +100,6 @@ function ExpenseForm() {
     categoryInputRef.current.value = "";
   };
 
-
   const fetchExpense = async () => {
     try {
       const expenseGet = await fetch(
@@ -112,7 +113,8 @@ function ExpenseForm() {
             id,
             ...response[id],
           }));
-         dispatch(expenseAction.addExpense(transformedExpense))
+          dispatch(expenseAction.addExpense(transformedExpense));
+           
         }
       } else {
         let response = await expenseGet.json();
@@ -123,12 +125,10 @@ function ExpenseForm() {
     }
   };
 
-  const editRequest = async(id)=>{
-    let editExpense = expenses.find((expense)=>expense.id === id)
-    setEditInput({...editExpense})
-     
-    }
-   
+  const editRequest = async (id) => {
+    let editExpense = expenses.find((expense) => expense.id === id);
+    setEditInput({ ...editExpense });
+  };
 
   return (
     <>

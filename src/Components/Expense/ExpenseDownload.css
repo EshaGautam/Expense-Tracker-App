@@ -1,0 +1,35 @@
+
+.download-button {
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  text-decoration: underline;
+  color: black;
+  transition: color 0.3s ease-in-out;
+}
+
+.download-button:hover {
+  color: red;
+}
+
+
+.download-button:hover::before {
+  content: 'Download expenses from here'; 
+  position: absolute;
+  background-color:pink;
+  color:black;
+  padding: 5px;
+  border-radius: 5px;
+  top: -30px;
+  left: 90%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  font-size: 15px;
+}
+
+.download-button:hover::before {
+  opacity: 1;
+}

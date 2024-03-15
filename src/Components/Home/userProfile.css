@@ -1,0 +1,108 @@
+/* .main{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 1em;
+    margin-top: 7%;
+    border-bottom: 2px solid gainsboro;
+     box-shadow: 2px 2px 3px grey;
+}
+.main p{
+    font-size: 2rem;
+}
+.toggle-text-btn{
+    font-size: 1rem;
+    background-color:lightsalmon;
+    border:none;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 3px grey;
+    padding: 1rem;
+}
+.contact-form{
+    margin-top: 15%;
+    
+}
+.toggle-text-btn p{
+    font-size:1rem ;
+}
+.Btn{
+    background-color:burlywood;
+    border: none;
+    width: 5rem;
+    padding: 0.25rem;
+    border-radius: 2px;
+    margin-left:40%;
+} */
+
+.main {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    padding-bottom: 1em;
+    margin-top: 2%;
+    border-bottom: 2px solid gainsboro;
+    box-shadow: 2px 2px 3px grey;
+   
+}
+
+.main p {
+    font-size: 3rem;
+    margin-left: 25%;
+}
+
+.toggle-text-btn {
+    font-size: 1rem;
+    background-color: lightsalmon;
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 3px grey;
+    margin-left:30%;
+}
+
+.contact-form {
+    margin-top: 17%;
+}
+
+.toggle-text-btn p {
+    font-size: 1rem;
+    text-align: center;
+    padding-right:5rem;
+}
+
+.Btn {
+    background-color: burlywood;
+    border: none;
+    width: 5rem;
+    padding: 0.25rem;
+    border-radius: 2px;
+    margin-left: 40%;
+}
+
+
+.darkmode .main {
+    border-bottom-color: darkgray;
+    box-shadow: 2px 2px 3px darkslategray;
+}
+
+.darkmode .main p {
+    color: white;
+}
+
+.darkmode .toggle-text-btn {
+    background-color: lightsalmon;
+    box-shadow: 2px 2px 3px darkslategray;
+}
+
+.darkmode .toggle-text-btn p {
+    color: black;
+}
+
+.darkmode .contact-form {
+    background-color: darkslategray;
+}
+
+.darkmode .Btn {
+    background-color: darkolivegreen;
+    color: white;
+}
